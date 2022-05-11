@@ -1,0 +1,223 @@
+---
+title: "Lakers2122"
+author: "Azuka Atum"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+lakers = read.csv("Lakers2122.csv", header=TRUE)
+
+head(lakers)
+
+
+summary(lakers)
+
+St_5<-lakers[1:5,]
+
+St_5
+
+Stat=St_5[, 3:6]
+
+Stat
+
+Stat_1=Stat[]
+
+Stat_1
+
+
+
+summary(St_5)
+
+#plot 
+
+plot(Stat)
+
+lm1<- lm(Age ~ G , data=lakers)
+
+plot(lm1)
+
+```
+
+```{r}
+library("corrplot")
+library("car")
+library("MASS")
+library("ggplot2")
+library("faraway")
+
+lakers = read.csv("Lakers2122_.csv", header=TRUE)
+head(lakers, n = 5)
+dim(lakers)
+
+lakdf=lakers[,3:24]
+
+summary(lakdf)
+
+#summary of lakers dataset
+summary(lakers)
+
+#full model
+lm_full=lm(PTS.G ~ . , data=lakdf)
+
+corr <- round(cor(lakdf, use = "pairwise.complete.obs"), 2)
+
+corrplot(corr, method = c("color"), type = c("full"), tl.srt = 45, order= 'AOE', addrect = 2, rect.col = 'black', diag = TRUE, tl.pos='d', insig='label_sig', number.cex=0.43, is.corr = TRUE, bg = 'grey')
+
+corrplot(corr, method = c("number"), type = c("full"), title= "Correlation Matrix for Lakers Shooting Predictors", tl.srt = 45, order= 'AOE', addrect = 2, rect.col = 'black', diag = TRUE, tl.pos='d', insig='label_sig', number.cex=0.43, is.corr = TRUE, bg = 'grey')
+
+
+#model removing highly correlated predictors
+#
+lm_12 =lm(PTS.G ~ . -MIN -FGM -FGA -thrptmd -thrptatt -thrpt_per -freethrowmd -freethrowatt -OREB -DREB -REB -AST -TOV, data=lakdf)
+
+lm_1 =lm(effFg_per ~ PTS.G + PF + GP + AGE + STL + BLK + OREB + freethrow_per ,data=lakdf)
+
+lm_1 =lm(PTS.G ~ effFg_per + PF + GP + AGE + STL + BLK + OREB + freethrow_per ,data=lakdf)
+
+
+summary(lm_1)
+#summary(powerTransform(lm_12))
+
+performance::check_model(lm_1)
+
+summary(lm_1)
+
+plot(lm_1)
+
+step(lm_1)
+
+round(vif(lm_1), 2)
+
+
+
+#pairs(log(PTS.G ~ -MIN -FGM -FGA -thrptmd -thrptatt -thrpt_per -freethrowmd -freethrowatt -OREB -DREB -REB -AST -TOV, data=lakdf)
+
+
+pairs(log(PTS.G) ~ log(effFg_per) + PF + log(GP) + AGE + STL + BLK + OREB + log(freethrow_per) ,data=lakdf)
+
+
+hist(lakdf$PTS.G, main = "Histogram of Points per game", xlab= "Points per game", xlim = c(0, 40), ylim = c(0, 10))
+
+plot(-log(PTS.G) ~ MIN + GP , data=lakdf)
+
+
+#partial F test
+anova(lm_2, lm_1)
+
+lm_2= lm(log(PTS.G) ~ GP + freethrow_per + STL + BLK, data = lakdf)
+
+summary(lm_2)
+
+performance::check_model(lm_2)
+
+pairs(formula = PTS.G ~ GP + freethrow_per + STL + BLK, data = lakdf)
+
+
+boxcox(lm_2, lambda = seq(0.3, 0.65, by=0.5))
+
+summary(powerTransform(lm_1))
+
+
+
+hist(log(lakdf$PTS.G), main="Histogram of Lakers Points per Game (21-22)", xlab="PPG")
+
+
+```
+
+```{r}
+
+library("corrplot")
+
+library("car")
+library("MASS")
+library("ggplot2")
+library("faraway")
+
+lm_1 =lm(PTS.G ~ effFg_per + PF + GP + AGE + STL + BLK + OREB + freethrow_per ,data=lakdf)
+
+
+
+#partial f-test
+anova(lm_3, lm_1)
+
+residualPlot(lm_3)
+hist(resid(lm_3))
+
+
+lm_3=lm(PTS.G ~ Age + G + FG_per + thrpt + thrptat + thrptat_per + 
+    twopt_per + effFG_per + freethrow_per + ORB + PF, data = lakdf)
+
+step(lm_3)
+
+
+lm(formula = PTS.G ~ GP + freethrow_per + STL + BLK, data = lakdf)
+
+dim(lakdf)
+
+
+
+
+boxcox(lm_3, lambda = seq(0.3, 0.65, by=0.05))
+summary(powerTransform((lm_3)))
+
+
+lm_4=lm(PTS.G^0.7 ~ Age + G + FG_per + thrpt + thrptat + thrptat_per + 
+    twopt_per + effFG_per + freethrow_per + ORB + PF, data = lakdf)
+
+#model removing highly correlated predictors
+#
+lm_3 =lm(PTS.G^0.5 ~ . -MIN -FGM -FGA -thrptmd -thrptatt -thrpt_per -freethrowmd -freethrowatt -OREB -DREB -REB -AST -TOV, data=lakdf)
+
+
+#remove fg_per
+lm_4 =lm(PTS.G^0.5 ~ . -MIN -FGM -FGA -thrptmd -thrptatt -thrpt_per -freethrowmd -freethrowatt -OREB -DREB -REB -AST -TOV -fg_per, data=lakdf)
+
+anova(lm_3, lm_4)
+
+
+
+
+summary(lm_3)
+
+summary(lm_4)
+
+
+performance::check_model((lm_4))
+
+anova(lm_4, lm_3) 
+
+anova(lm_2, lm_1)
+
+lakdf
+
+Y = -7.11 + 0.16*(29) + 0.15*(82) + 3.42*(0.5) + -0.07*(60) + 7.30*(1) + 6.33*(0.4) + 0.05*(1.6)
+
+Y
+
+hist(resid(lm_4))
+
+summary(lm_4)
+
+plot(lm_4)
+
+age2=lakdf$Age
+
+par(mfrow=c(1,3), mar=c(4.5, 4.5, 2,2))
+plot(age2, rstandard(lm_4),  xlab="Age", ylab="Standardized Residuals", data=lakdf)
+
+rstandard(lm_4)
+
+ ggplot(lm_4, aes(x = x, y = y)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  ylim(0, 200) +
+  ggtitle("No Outliers")
+
+```
+
