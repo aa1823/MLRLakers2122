@@ -1,0 +1,78 @@
+---
+title: "Lakers2122"
+author: "Azuka Atum"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r}
+library("corrplot")
+library("car")
+library("MASS")
+library("ggplot2")
+library("faraway")
+
+lakers = read.csv("Lakers2122_.csv", header=TRUE)
+head(lakers, n = 5)
+dim(lakers)
+
+lakdf=lakers[,3:24]
+
+summary(lakdf)
+
+#summary of lakers dataset
+summary(lakers)
+
+#full model
+lm_full=lm(PTS.G ~ . , data=lakdf)
+
+corr <- round(cor(lakdf, use = "pairwise.complete.obs"), 2)
+
+corrplot(corr, method = c("color"), type = c("full"), tl.srt = 45, order= 'AOE', addrect = 2, rect.col = 'black', diag = TRUE, tl.pos='d', insig='label_sig', number.cex=0.43, is.corr = TRUE, bg = 'grey')
+
+corrplot(corr, method = c("number"), type = c("full"), title= "Correlation Matrix for Lakers Shooting Predictors", tl.srt = 45, order= 'AOE', addrect = 2, rect.col = 'black', diag = TRUE, tl.pos='d', insig='label_sig', number.cex=0.43, is.corr = TRUE, bg = 'grey')
+
+
+#model removing highly correlated predictors
+#
+lm_1 =lm(PTS.G ~ . -MIN -FGM -FGA -thrptmd -thrptatt -thrpt_per -freethrowmd -freethrowatt -OREB -DREB -REB -AST -TOV, data=lakdf)
+
+
+
+summary(lm_1)
+#summary(powerTransform(lm_12))
+
+performance::check_model(lm_1)
+
+summary(lm_1)
+
+plot(lm_1)
+
+```
+
+
+```{r}
+
+
+#model removing highly correlated predictors
+#
+lm_3 =lm(PTS.G^0.5 ~ . -MIN -FGM -FGA -thrptmd -thrptatt -thrpt_per -freethrowmd -freethrowatt -OREB -DREB -REB -AST -TOV, data=lakdf)
+
+
+#remove fg_per
+lm_4 =lm(PTS.G^0.5 ~ . -MIN -FGM -FGA -thrptmd -thrptatt -thrpt_per -freethrowmd -freethrowatt -OREB -DREB -REB -AST -TOV -fg_per, data=lakdf)
+
+anova(lm_3, lm_4)
+
+#summary stats of model 3 and 4
+summary(lm_3)
+
+summary(lm_4)
+
+#performance check of final model
+performance::check_model((lm_4))
+
+#normal qq plot and plot of residuals
+plot(lm_4)
+
+```
