@@ -9,14 +9,8 @@ This file contains full per-game stats for each player on the Lakers from 2018 t
 Data was adapted from https://www.basketball-reference.com/ and https://www.nba.com/lakers/stats
 
 
-# Contributing 
-* Me
-
-
-# Authors 
-* Me
 
 # Acknowledgements 
 * Thank you to Dr. Kerr from CSUEB 
 * Thank you CSUEB
-* Introduction adapted
+* Introduction adapted from final paper
