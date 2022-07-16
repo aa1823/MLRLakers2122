@@ -7,9 +7,9 @@
 
 As the value of sports teams increases and technical analytics advances, many find that basketball analytics is a burgeoning field of research for application of these avenues. From sports betting to predicting player performance using aggregate data provided by many basketball sources such as NBA.com or Basketball-reference.com, many statisticians and analysts are clamoring to use modeling to their advantage.
 
-#Getting Started
+# Getting Started
 
-###Data and Links
+### Data and Links
 * [Sports Reference LLC "(2018...2021-22 Los Angeles Lakers Roster and Stats)." Basketball-Reference.com - Basketball Statistics and History. https://www.basketball-reference.com/.](https://www.basketball-reference.com/teams/LAL/2022.html)
 * [nba.com]( https://www.nba.com/lakers/stats)
 
