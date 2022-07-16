@@ -5,50 +5,65 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
-```{r}
+```{r Preparing Lakers Dataset}
 library("corrplot")
 library("car")
 library("MASS")
 library("ggplot2")
 library("faraway")
 
+#load lakers dataset into R
 lakers = read.csv("Lakers2122_.csv", header=TRUE)
 head(lakers, n = 5)
-dim(lakers)
-
-lakdf=lakers[,3:24]
-
-summary(lakdf)
+dim(lakers) #dimensions of set
 
 #summary of lakers dataset
 summary(lakers)
 
+#selects specific data frame from data set over a range of columns
+lakdf=lakers[,3:24] 
+
+summary(lakdf)
+
+
 #full model
 lm_full=lm(PTS.G ~ . , data=lakdf)
 
+
+#correlation plot for selected data frame
 corr <- round(cor(lakdf, use = "pairwise.complete.obs"), 2)
 
+#color corrplot
 corrplot(corr, method = c("color"), type = c("full"), tl.srt = 45, order= 'AOE', addrect = 2, rect.col = 'black', diag = TRUE, tl.pos='d', insig='label_sig', number.cex=0.43, is.corr = TRUE, bg = 'grey')
 
+#numerical corrplot
 corrplot(corr, method = c("number"), type = c("full"), title= "Correlation Matrix for Lakers Shooting Predictors", tl.srt = 45, order= 'AOE', addrect = 2, rect.col = 'black', diag = TRUE, tl.pos='d', insig='label_sig', number.cex=0.43, is.corr = TRUE, bg = 'grey')
 
 
+
+#It is hard to visualize because many predictors are perfectly correlated producing aliasing so I had to do process of elimination for each predictor. 
+
 #model removing highly correlated predictors
-#
-lm_1 =lm(PTS.G ~ . -MIN -FGM -FGA -thrptmd -thrptatt -thrpt_per -freethrowmd -freethrowatt -OREB -DREB -REB -AST -TOV, data=lakdf)
+#linear model 1 removing predictors I was not interested in: Minutes, Field Goals Made, Field Goal Attempt, Three Point Attempt, Three Point Percentage, Free throw Made, Free Throw Attempt, Offensive Rebound, Defensive Rebound, Rebounding Assists, Turnovers were all removed. 
 
+lm_1 = lm(PTS.G ~ . -MIN -FGM -FGA -thrptmd -thrptatt -thrpt_per -freethrowmd -freethrowatt -OREB -DREB -REB -AST -TOV, data=lakdf)
 
-
+#summary of lm1
 summary(lm_1)
+
 #summary(powerTransform(lm_12))
 
+#performance check of this model
 performance::check_model(lm_1)
 
 summary(lm_1)
 
+#plot showing q-q, hist, other important stats
 plot(lm_1)
 
 ```
+
+
 
 
 ```{r}
