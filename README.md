@@ -14,7 +14,8 @@ As the value of sports teams increases and technical analytics advances, many fi
 * [nba.com]( https://www.nba.com/lakers/stats)
 
 
-#Authors
+# Authors
+
 @azu-ka
 
 # Acknowledgements 
