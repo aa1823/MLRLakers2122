@@ -1,6 +1,6 @@
 # Multiple Linear Regression of the 2021-2022 Lakers Regular Season
 
-⋅⋅⋅**The goal of this MLR analysis of the 2021-2022 Lakers season is to assess whether or not effective field goal percentage, free throw percentage, games played, personal fouls, steals, and blocks are good indicators of points per game performance during the season.** 
+**The goal of this MLR analysis of the 2021-2022 Lakers season is to assess whether or not effective field goal percentage, free throw percentage, games played, personal fouls, steals, and blocks are good indicators of points per game performance during the season.** 
 
 
 # Description
