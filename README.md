@@ -16,7 +16,7 @@ As the value of sports teams increases and technical analytics advances, many fi
 
 # Authors
 
-[@azu-ka](https://gist.github.com/azu-ka)
+[@aa1823]
 
 # Acknowledgements 
 
